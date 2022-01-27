@@ -5,6 +5,7 @@ from typing import List
 from aqt.qt import *
 from aqt.utils import showWarning
 from anki.notes import Note
+from aqt.operations import QueryOp
 
 from .form import Ui_Dialog
 from .consts import *
@@ -12,6 +13,8 @@ from .consts import *
 sys.path.insert(0, os.path.join(ADDON_DIR, "vendor"))
 
 from tdk import TDK, NetworkError, NoAudioError, WordNotFoundError
+
+PROGRESS_LABEL = "Updated {count} out of {total} note(s)"
 
 
 class TRDictDialog(QDialog):
@@ -69,7 +72,6 @@ class TRDictDialog(QDialog):
             self.done(0)
             return
 
-        errors = []
         if self.form.wordFieldComboBox.currentIndex() == 0:
             showWarning("No word field selected.", parent=self, title="TRDict")
             return
@@ -77,6 +79,32 @@ class TRDictDialog(QDialog):
         definition_field_i = self.form.definitionFieldComboBox.currentIndex()
         sentence_field_i = self.form.sentenceFieldComboBox.currentIndex()
         audio_field_i = self.form.audioFieldComboBox.currentIndex()
+
+        def on_success(ret):
+            if len(self.updated_notes) > 0:
+                self.done(1)
+            else:
+                self.done(0)
+
+        # FIXME: when our dialog is triggered from the editor and finished running,
+        # the main window gets brought to the front instead of self.parent
+        op = QueryOp(
+            parent=self.parent,
+            op=lambda col: self._fill_notes(
+                word_field, definition_field_i, sentence_field_i, audio_field_i
+            ),
+            success=on_success,
+        )
+        # with_progress() was broken until Anki 2.1.50 (https://addon-docs.ankiweb.net/background-ops.html#read-onlynon-undoable-operations),
+        # so this doesn't work on the latest stable release
+        op.with_progress(
+            PROGRESS_LABEL.format(count=0, total=len(self.notes))
+        ).run_in_background()
+
+    def _fill_notes(
+        self, word_field, definition_field_i, sentence_field_i, audio_field_i
+    ):
+        self.errors = []
         self.updated_notes = []
         for note in self.notes:
             word = note[word_field]
@@ -99,16 +127,19 @@ class TRDictDialog(QDialog):
                 showWarning(str(ex), parent=self, title="TRDict")
                 break
             except (WordNotFoundError, NoAudioError) as ex:
-                errors.append(str(ex))
+                self.errors.append(str(ex))
             finally:
                 if need_updating:
                     self.updated_notes.append(note)
-
-        self.errors = errors
-        if len(self.updated_notes) > 0:
-            self.done(1)
-        else:
-            self.done(0)
+                    self.mw.taskman.run_on_main(
+                        lambda: self.mw.progress.update(
+                            label=PROGRESS_LABEL.format(
+                                count=len(self.updated_notes), total=len(self.notes)
+                            ),
+                            value=len(self.updated_notes),
+                            max=len(self.notes),
+                        )
+                    )
 
     def _get_definitions(self, tdk: TDK) -> str:
         field_contents = []

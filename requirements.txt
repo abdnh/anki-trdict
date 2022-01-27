@@ -1,5 +1,5 @@
-anki
-aqt
+anki>=2.1.49
+aqt>=2.1.49
 TDK
 git+https://github.com/abdnh/tdk
 black

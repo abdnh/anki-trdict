@@ -15,6 +15,5 @@ for a field's contents on the fly that can be used by typing something like this
 ```
 
 ## TODO
-- [ ] Progress bar
 - [ ] Save the most recently used field mappings for each notetype
 - [ ] Upload a GitHub release

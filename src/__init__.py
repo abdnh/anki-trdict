@@ -21,7 +21,7 @@ from .consts import *
 def on_bulk_updated_notes(browser: Browser, errors: List[str], updated_count: int):
     msg = f"Updated {updated_count} note(s) with data from the TDK dictionary."
     if errors:
-        msg = +" The following issues happened during the process:\n"
+        msg += " The following issues happened during the process:\n"
         msg += "\n".join(errors)
         showText(msg, parent=browser, title=ADDON_NAME)
     else:
@@ -51,7 +51,7 @@ def on_browser_menus_did_init(browser: Browser):
 
 def on_editor_button_clicked(editor: Editor) -> None:
     if editor.note:
-        dialog = TRDictDialog(editor.mw, editor.widget, [editor.note])
+        dialog = TRDictDialog(editor.mw, editor.parentWindow, [editor.note])
         if dialog.exec():
             editor.loadNoteKeepingFocus()
 
