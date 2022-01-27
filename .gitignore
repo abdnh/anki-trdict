@@ -1,0 +1,6 @@
+.vscode/
+venv/
+ankiprofile/
+*.ankiaddon
+src/form.py
+vendor/

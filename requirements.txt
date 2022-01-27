@@ -1,0 +1,6 @@
+anki
+aqt
+TDK
+git+https://github.com/abdnh/tdk
+black
+mypy
