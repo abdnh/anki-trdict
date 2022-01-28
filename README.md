@@ -15,7 +15,10 @@ for a field's contents on the fly that can be used by typing something like this
 ```
 {{trdict-audio:Front}}
 ```
-Only works on Anki 2.1.49+ for now.
+Audio files generated this way are not saved to your notes and synced. Instead they are cached inside the [user_files/audiocache](./src/user_files/readme.txt) folder and preserved after add-on updates.
+
+
+The add-on works on Anki 2.1.49+ for now.
 
 ## TODO
 - [ ] Save the most recently used field mappings for each notetype
