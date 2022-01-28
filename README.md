@@ -20,7 +20,11 @@ Audio files generated this way are not saved to your notes and synced. Instead t
 
 The add-on works on Anki 2.1.49+ for now.
 
+## Installation
+
+Download the add-on package (TRDict.ankiaddon) from the releases page and open it to install in Anki:
+https://github.com/abdnh/anki-trdict/releases
+
 ## TODO
 - [ ] Save the most recently used field mappings for each notetype
-- [ ] Upload a GitHub release
 - [ ] Add interface to look up words

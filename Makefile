@@ -16,6 +16,7 @@ tdk: src/vendor/tdk.py
 src/vendor/tdk.py:
 	curl https://raw.githubusercontent.com/abdnh/tdk/master/tdk.py -o $@
 
+# Install in test profile
 install: zip
 	unzip -o TRDict.ankiaddon -d ankiprofile/addons21/TRDict
 
