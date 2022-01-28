@@ -22,7 +22,6 @@ class TRDictDialog(QDialog):
         super().__init__(parent)
         self.form = Ui_Dialog()
         self.form.setupUi(self)
-        self.parent = parent
         self.mw = mw
         self.notes = notes
         self.combos = [
@@ -89,7 +88,7 @@ class TRDictDialog(QDialog):
         # FIXME: when our dialog is triggered from the editor and finished running,
         # the main window gets brought to the front instead of self.parent
         op = QueryOp(
-            parent=self.parent,
+            parent=self.parentWidget(),
             op=lambda col: self._fill_notes(
                 word_field, definition_field_i, sentence_field_i, audio_field_i
             ),

@@ -1,6 +1,5 @@
 from typing import List
 
-from aqt import mw
 from aqt.gui_hooks import (
     browser_menus_did_init,
     editor_did_init_buttons,
@@ -29,8 +28,8 @@ def on_bulk_updated_notes(browser: Browser, errors: List[str], updated_count: in
 
 
 def on_browser_action_triggered(browser: Browser) -> None:
-    notes = [mw.col.get_note(nid) for nid in browser.selected_notes()]
-    dialog = TRDictDialog(mw, browser, notes)
+    notes = [browser.mw.col.get_note(nid) for nid in browser.selected_notes()]
+    dialog = TRDictDialog(browser.mw, browser, notes)
     if dialog.exec():
         CollectionOp(
             parent=browser,
