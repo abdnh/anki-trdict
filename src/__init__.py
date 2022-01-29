@@ -9,7 +9,7 @@ from anki.template import TemplateRenderContext
 from aqt.qt import *
 from aqt.browser.browser import Browser
 from aqt.editor import Editor
-from aqt.utils import showText, tooltip, showWarning
+from aqt.utils import showText, tooltip
 from aqt.operations import CollectionOp
 
 from .dialog import TRDictDialog
@@ -82,8 +82,7 @@ def trdict_filter(
     try:
         files = get_audio(field_text)
     except Exception as ex:
-        showWarning(str(ex), title=ADDON_NAME)
-        return field_text
+        return f'<div style="color: red;">{str(ex)}</div>'
 
     sound_refs = "".join(map(lambda f: f"[sound:{f}]", files))
 
