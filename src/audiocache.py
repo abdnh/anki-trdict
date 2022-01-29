@@ -32,6 +32,7 @@ def get_audio(word: str) -> List[str]:
     files = get_cached_audio(disk_word)
     if len(files) == 0:
         tdk = TDK(word)
+        links = tdk.audio_links
         tdk.word = disk_word
         files = tdk.download_audio(AUDIO_CACHE_DIR)
     return files
