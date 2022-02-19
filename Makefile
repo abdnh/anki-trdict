@@ -7,13 +7,12 @@ zip: forms TRDict.ankiaddon
 src/form.py: designer/dialog.ui
 	pyuic5 $^ > $@
 
-TRDict.ankiaddon: $(shell find src/ -type f) tdk
+TRDict.ankiaddon: $(shell find src/ -type f) src/vendor/tdk.py
 	rm -f $@
 	( cd src/; zip -r ../$@ * )
 
-tdk: src/vendor/tdk.py
-
 src/vendor/tdk.py:
+	mkdir -p src/vendor
 	curl https://raw.githubusercontent.com/abdnh/tdk/master/tdk.py -o $@
 
 # Install in test profile
