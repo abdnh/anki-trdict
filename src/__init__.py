@@ -42,7 +42,7 @@ def on_browser_action_triggered(browser: Browser) -> None:
 
 
 def on_browser_menus_did_init(browser: Browser):
-    a = QAction("Update Selected from Turkish Dictionary", browser)
+    a = QAction("Bulk-define selected Turkish words", browser)
     qconnect(a.triggered, lambda: on_browser_action_triggered(browser))
     browser.form.menuEdit.addSeparator()
     browser.form.menuEdit.addAction(a)
