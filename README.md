@@ -22,8 +22,7 @@ The add-on works on Anki 2.1.49+ for now.
 
 ## Installation
 
-Download the add-on package (TRDict.ankiaddon) from the releases page and open it to install in Anki:
-https://github.com/abdnh/anki-trdict/releases
+You can download the add-on from AnkiWeb: https://ankiweb.net/shared/info/351090164
 
 ## TODO
 - [ ] Save the most recently used field mappings for each notetype
