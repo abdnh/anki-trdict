@@ -32,7 +32,7 @@ def cache_failed_lookup(disk_word: str) -> None:
         lookups: List = json.load(f)
     lookups.append(disk_word)
     with open(FAILED_LOOKUP_CACHE_FILE, "w") as f:
-        json.dump(lookups, f)
+        json.dump(lookups, f, ensure_ascii=False)
 
 
 def has_cached_failed_lookup(disk_word: str) -> bool:
