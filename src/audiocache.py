@@ -8,6 +8,8 @@ import tdk
 
 from .consts import *
 
+tdk.TDK.user_agent = "Mozilla/5.0 (compatible; Anki)"
+
 
 def normalize_word(word: str) -> str:
     return stripHTML(word).strip()
