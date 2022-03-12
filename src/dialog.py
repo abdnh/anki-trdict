@@ -1,5 +1,5 @@
-import sys
-from urllib.request import urlopen
+import urllib
+import urllib.request
 from typing import List
 
 from aqt.qt import *
@@ -9,8 +9,6 @@ from aqt.operations import QueryOp
 
 from .form import Ui_Dialog
 from .consts import *
-
-sys.path.insert(0, os.path.join(ADDON_DIR, "vendor"))
 
 from tdk import TDK, NetworkError, NoAudioError, WordNotFoundError
 
@@ -158,7 +156,10 @@ class TRDictDialog(QDialog):
         for i, link in enumerate(audio_links):
             name = f"{tdk.word}_{i+1}{link[link.rfind('.'):]}"
             try:
-                with urlopen(link) as res:
+                req = urllib.request.Request(
+                    link, None, headers={"User-Agent": USER_AGENT}
+                )
+                with urllib.request.urlopen(req) as res:
                     name = self.mw.col.media.write_data(name, res.read())
                     field_contents += f"[sound:{name}]"
             except Exception:

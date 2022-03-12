@@ -10,3 +10,5 @@ os.makedirs(AUDIO_CACHE_DIR, exist_ok=True)
 if not os.path.exists(FAILED_LOOKUP_CACHE_FILE):
     with open(FAILED_LOOKUP_CACHE_FILE, "w") as f:
         f.write("[]\n")
+
+USER_AGENT = "Mozilla/5.0 (compatible; Anki)"

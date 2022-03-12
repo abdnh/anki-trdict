@@ -1,3 +1,4 @@
+import sys
 from typing import List
 
 from aqt.gui_hooks import (
@@ -12,9 +13,16 @@ from aqt.editor import Editor
 from aqt.utils import showText, tooltip
 from aqt.operations import CollectionOp
 
+from .consts import *
+
+sys.path.insert(0, os.path.join(ADDON_DIR, "vendor"))
+
+import tdk
+
+tdk.TDK.user_agent = USER_AGENT
+
 from .dialog import TRDictDialog
 from .audiocache import get_audio
-from .consts import *
 
 
 def on_bulk_updated_notes(browser: Browser, errors: List[str], updated_count: int):
