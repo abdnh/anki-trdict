@@ -3,6 +3,7 @@ import urllib.request
 from typing import List
 
 from aqt.qt import *
+from aqt.main import AnkiQt
 from aqt.utils import showWarning
 from anki.notes import Note
 from aqt.operations import QueryOp
@@ -16,7 +17,7 @@ PROGRESS_LABEL = "Updated {count} out of {total} note(s)"
 
 
 class TRDictDialog(QDialog):
-    def __init__(self, mw, parent, notes: List[Note]):
+    def __init__(self, mw: AnkiQt, parent, notes: List[Note]):
         super().__init__(parent)
         self.form = Ui_Dialog()
         self.form.setupUi(self)
@@ -70,7 +71,7 @@ class TRDictDialog(QDialog):
             return
 
         if self.form.wordFieldComboBox.currentIndex() == 0:
-            showWarning("No word field selected.", parent=self, title="TRDict")
+            showWarning("No word field selected.", parent=self, title=ADDON_NAME)
             return
         word_field = self.form.wordFieldComboBox.currentText()
         definition_field_i = self.form.definitionFieldComboBox.currentIndex()
@@ -83,20 +84,33 @@ class TRDictDialog(QDialog):
             else:
                 self.done(0)
 
-        # FIXME: when our dialog is triggered from the editor and finished running,
-        # the main window gets brought to the front instead of self.parent
         op = QueryOp(
-            parent=self.parentWidget(),
+            parent=self,
             op=lambda col: self._fill_notes(
                 word_field, definition_field_i, sentence_field_i, audio_field_i
             ),
             success=on_success,
         )
+
+        def on_failure(exc):
+            self.mw.progress.finish()
+            showWarning(str(exc), parent=self, title=ADDON_NAME)
+
+        op.failure(on_failure)
+
+        self.mw.progress.start(
+            max=len(self.notes),
+            label=PROGRESS_LABEL.format(count=0, total=len(self.notes)),
+            parent=self,
+        )
+        self.mw.progress.set_title(ADDON_NAME)
+        op.run_in_background()
+
         # with_progress() was broken until Anki 2.1.50 (https://addon-docs.ankiweb.net/background-ops.html#read-onlynon-undoable-operations),
         # so this doesn't work on the latest stable release
-        op.with_progress(
-            PROGRESS_LABEL.format(count=0, total=len(self.notes))
-        ).run_in_background()
+        # op.with_progress(
+        #     PROGRESS_LABEL.format(count=0, total=len(self.notes))
+        # ).run_in_background()
 
     def _fill_notes(
         self, word_field, definition_field_i, sentence_field_i, audio_field_i
@@ -120,9 +134,6 @@ class TRDictDialog(QDialog):
                     audio = self._get_audio_files(tdk)
                     note[self.field_names[audio_field_i]] = audio
                     need_updating = True
-            except NetworkError as ex:
-                showWarning(str(ex), parent=self, title="TRDict")
-                break
             except (WordNotFoundError, NoAudioError) as ex:
                 self.errors.append(str(ex))
             finally:
@@ -137,6 +148,7 @@ class TRDictDialog(QDialog):
                             max=len(self.notes),
                         )
                     )
+        self.mw.taskman.run_on_main(lambda: self.mw.progress.finish())
 
     def _get_definitions(self, tdk: TDK) -> str:
         field_contents = []
