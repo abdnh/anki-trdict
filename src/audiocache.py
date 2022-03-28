@@ -3,7 +3,11 @@ from typing import List
 import re
 import json
 
-from anki.utils import stripHTML
+try:
+    from anki.utils import strip_html as stripHTML
+except:
+    from anki.utils import stripHTML
+
 import tdk
 
 from .consts import *

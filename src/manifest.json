@@ -1,4 +1,1 @@
-{
-    "package": "TRDict",
-    "name": "TRDict - Turkish Dictionary"
-}
+{"name": "TRDict - Turkish Dictionary", "homepage": "https://github.com/abdnh/anki-trdict/", "package": "TRDict", "conflicts": ["351090164"]}
