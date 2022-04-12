@@ -1,5 +1,6 @@
 import json
 from typing import Any
+import re
 
 from aqt import mw
 from aqt.qt import QKeySequence, QShortcut
@@ -19,13 +20,11 @@ import tdk
 base_path = f"/_addons/{mw.addonManager.addonFromModule(__name__)}/web"
 mw.addonManager.setWebExports(__name__, r"web(vendor)*/.*\.(js|css)")
 config = mw.addonManager.getConfig(__name__)
-tooltip_enabled_notetypes = config["tooltip_enabled_notetypes"]
+tooltip_enabled_notetypes = [re.compile(p) for p in config["tooltip_enabled_notetypes"]]
 
 
 def should_enable_tooltip(notetype: str) -> bool:
-    if tooltip_enabled_notetypes == "all":
-        return True
-    return notetype in tooltip_enabled_notetypes
+    return any(p.match(notetype) for p in tooltip_enabled_notetypes)
 
 
 def append_webcontent(webcontent: WebContent, context: Any):
