@@ -23,6 +23,7 @@ tdk.TDK.user_agent = USER_AGENT
 
 from .dialog import TRDictDialog
 from .audiocache import get_audio
+from .tooltips import init_webview
 
 
 def on_bulk_updated_notes(browser: Browser, errors: List[str], updated_count: int):
@@ -100,3 +101,4 @@ def trdict_filter(
 browser_menus_did_init.append(on_browser_menus_did_init)
 editor_did_init_buttons.append(on_editor_did_init_buttons)
 field_filter.append(trdict_filter)
+init_webview()
