@@ -126,7 +126,6 @@ def formatted_dict_entries(word: str) -> str:
 def handle_popup_request(
     handled: tuple[bool, Any], message: str, context: Any
 ) -> tuple[bool, Any]:
-    print(f"message: {message}")
     parts = message.split(":")
     cmd = parts[0]
     if cmd != "trdict" or len(parts) == 1:
