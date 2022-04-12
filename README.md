@@ -1,6 +1,6 @@
 # Turkish Dictionary for Anki
 
-<img src="shots/dialog.png" width=600>
+![](shots/dialog.png)
 
 An [Anki](https://apps.ankiweb.net/) add-on to look up Turkish vocabulary and fill notes with information
 from the official [TDK dictionary](https://sozluk.gov.tr/).
@@ -21,7 +21,7 @@ Audio files generated this way are not saved to your notes and synced. Instead t
 
 You can also look up a word by double clicking on it when reviewing:
 
-<img src="shots/popup.png" width=600>
+![](shots/popup.png)
 
 This works for notetypes specified in the `tooltip_enabled_notetypes` option, which can be modified from **Tools > Add-ons**. You can also assign a shortcut to the `tooltip_shortcut` option to trigger the tooltip from any card. The default is `Alt+Shift+S`.
 
