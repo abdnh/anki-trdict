@@ -24,7 +24,7 @@ tooltip_enabled_notetypes = [re.compile(p) for p in config["tooltip_enabled_note
 
 
 def should_enable_tooltip(notetype: str) -> bool:
-    return any(p.match(notetype) for p in tooltip_enabled_notetypes)
+    return any(p.search(notetype) for p in tooltip_enabled_notetypes)
 
 
 def append_webcontent(webcontent: WebContent, context: Any):
