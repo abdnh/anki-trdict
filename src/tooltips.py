@@ -3,10 +3,12 @@ from typing import Any
 import re
 
 from aqt import mw
-from aqt.qt import QKeySequence, QShortcut
+from aqt.qt import *
 
 from aqt.reviewer import Reviewer
-from aqt.webview import WebContent
+from aqt.browser.previewer import Previewer
+from aqt.clayout import CardLayout
+from aqt.webview import WebContent, AnkiWebView
 from aqt.gui_hooks import (
     webview_will_set_content,
     card_will_show,
@@ -29,8 +31,7 @@ def should_enable_tooltip(notetype: str) -> bool:
 
 def append_webcontent(webcontent: WebContent, context: Any):
 
-    # TODO: allow in previewer and card layouts too
-    if isinstance(context, Reviewer):
+    if isinstance(context, (Reviewer, Previewer, CardLayout)):
         webcontent.js.append(f"{base_path}/vendor/popper.min.js")
         webcontent.js.append(f"{base_path}/vendor/tippy.umd.min.js")
         webcontent.js.append(f"{base_path}/tooltips.js")
@@ -123,6 +124,16 @@ def formatted_dict_entries(word: str) -> str:
         return f'<div style="color: red">{exc}</div>'
 
 
+def get_webview_for_context(context: Any) -> AnkiWebView:
+    if isinstance(context, Previewer):
+        web = context._web
+    elif isinstance(context, CardLayout):
+        web = context.preview_web
+    else:
+        web = context.web
+    return web
+
+
 def handle_popup_request(
     handled: tuple[bool, Any], message: str, context: Any
 ) -> tuple[bool, Any]:
@@ -134,14 +145,24 @@ def handle_popup_request(
     if subcmd == "popup":
         contents = formatted_dict_entries(word)
         contents = json.dumps(contents)
-        context.web.eval(f"globalThis.tippyInstance.setContent({contents});")
+        web = get_webview_for_context(context)
+        web.eval(f"globalThis.tippyInstance.setContent({contents});")
     return (True, None)
 
 
 def show_tooltip():
-    if mw.state != "review":
+    window = mw.app.activeWindow()
+    print(window, type(window))
+    # FIXME: not actually working in the card layouts screen
+    if isinstance(window, CardLayout):
+        web = window.preview_web
+    elif isinstance(window, Previewer):
+        web = window._web
+    elif mw.state == "review":
+        web = mw.reviewer.web
+    else:
         return
-    mw.reviewer.web.eval("showTooltipForSelection();")
+    web.eval("showTooltipForSelection();")
 
 
 def init_webview():
@@ -152,4 +173,5 @@ def init_webview():
         QKeySequence(config["tooltip_shortcut"]),
         mw,
         activated=show_tooltip,
+        context=Qt.ShortcutContext.ApplicationShortcut,
     )
