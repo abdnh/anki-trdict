@@ -152,7 +152,6 @@ def handle_popup_request(
 
 def show_tooltip():
     window = mw.app.activeWindow()
-    print(window, type(window))
     # FIXME: not actually working in the card layouts screen
     if isinstance(window, CardLayout):
         web = window.preview_web

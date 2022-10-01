@@ -38,6 +38,7 @@ class TRDictDialog(QDialog):
         self.form.icon.setPixmap(QPixmap(os.path.join(ADDON_DIR, "icon.png")))
         self._fill_fields()
         qconnect(self.form.addButton.clicked, self.on_add)
+        self.form.addButton.setShortcut(QKeySequence("Ctrl+Return"))
 
     def _fill_fields(self):
         mids = set(note.mid for note in self.notes)

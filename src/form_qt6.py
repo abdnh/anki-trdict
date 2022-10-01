@@ -50,6 +50,10 @@ class Ui_Dialog(object):
         self.addButton.setDefault(True)
         self.addButton.setObjectName("addButton")
         self.verticalLayout.addWidget(self.addButton)
+        self.label.setBuddy(self.wordFieldComboBox)
+        self.label_2.setBuddy(self.definitionFieldComboBox)
+        self.label_3.setBuddy(self.sentenceFieldComboBox)
+        self.label_4.setBuddy(self.audioFieldComboBox)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -57,8 +61,8 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         self.icon.setText(_translate("Dialog", "TextLabel"))
-        self.label.setText(_translate("Dialog", "Word"))
-        self.label_2.setText(_translate("Dialog", "Definition"))
-        self.label_3.setText(_translate("Dialog", "Sentence"))
-        self.label_4.setText(_translate("Dialog", "Audio"))
+        self.label.setText(_translate("Dialog", "&Word"))
+        self.label_2.setText(_translate("Dialog", "&Definition"))
+        self.label_3.setText(_translate("Dialog", "&Sentence"))
+        self.label_4.setText(_translate("Dialog", "&Audio"))
         self.addButton.setText(_translate("Dialog", "Add"))

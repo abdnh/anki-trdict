@@ -26,7 +26,10 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Word</string>
+        <string>&amp;Word</string>
+       </property>
+       <property name="buddy">
+        <cstring>wordFieldComboBox</cstring>
        </property>
       </widget>
      </item>
@@ -36,7 +39,10 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Definition</string>
+        <string>&amp;Definition</string>
+       </property>
+       <property name="buddy">
+        <cstring>definitionFieldComboBox</cstring>
        </property>
       </widget>
      </item>
@@ -46,7 +52,10 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Sentence</string>
+        <string>&amp;Sentence</string>
+       </property>
+       <property name="buddy">
+        <cstring>sentenceFieldComboBox</cstring>
        </property>
       </widget>
      </item>
@@ -56,7 +65,10 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Audio</string>
+        <string>&amp;Audio</string>
+       </property>
+       <property name="buddy">
+        <cstring>audioFieldComboBox</cstring>
        </property>
       </widget>
      </item>
