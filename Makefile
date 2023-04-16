@@ -1,24 +1,26 @@
-.PHONY: all forms zip clean format check ankiweb run
+.PHONY: all zip ankiweb fix mypy pylint clean
+
 all: ankiweb zip
 
 zip:
-	python -m ankibuild --type package --install --qt all --noconsts
+	python -m ankibuild --type package --qt all
 
 ankiweb:
-	python -m ankibuild --type ankiweb --install --qt all --noconsts
-
-run: zip
-	python -m ankirun
+	python -m ankibuild --type ankiweb --qt all
 
 src/vendor/tdk.py:
 	mkdir -p src/vendor
 	curl https://raw.githubusercontent.com/abdnh/tdk/master/tdk.py -o $@
 
-format:
-	python -m black src/
+fix:
+	python -m black src tests --exclude="forms|vendor"
+	python -m isort src tests
 
-check:
-	python -m mypy src/
+mypy:
+	python -m mypy src tests
+
+pylint:
+	python -m pylint src tests
 
 clean:
 	rm -rf build/

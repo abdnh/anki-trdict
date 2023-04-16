@@ -1,6 +1,0 @@
-anki>=2.1.49
-aqt>=2.1.49
-tdk @ git+https://github.com/abdnh/tdk@42dc4a710ee96cbc98f24985b84927108ccaa0aa
-ankibuild @ git+https://github.com/abdnh/ankibuild#egg=ankibuild[qt5,qt6]
-black
-mypy
