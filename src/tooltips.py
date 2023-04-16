@@ -1,23 +1,20 @@
 import json
-from typing import Any
 import re
-
-from aqt import mw
-from aqt.qt import *
-
-from aqt.reviewer import Reviewer
-from aqt.browser.previewer import Previewer
-from aqt.clayout import CardLayout
-from aqt.webview import WebContent, AnkiWebView
-from aqt.gui_hooks import (
-    webview_will_set_content,
-    card_will_show,
-    webview_did_receive_js_message,
-)
-
-from anki.cards import Card
+from typing import Any
 
 import tdk
+from anki.cards import Card
+from aqt import mw
+from aqt.browser.previewer import Previewer
+from aqt.clayout import CardLayout
+from aqt.gui_hooks import (
+    card_will_show,
+    webview_did_receive_js_message,
+    webview_will_set_content,
+)
+from aqt.qt import *
+from aqt.reviewer import Reviewer
+from aqt.webview import AnkiWebView, WebContent
 
 base_path = f"/_addons/{mw.addonManager.addonFromModule(__name__)}/web"
 mw.addonManager.setWebExports(__name__, r"web(vendor)*/.*\.(js|css)")
@@ -30,7 +27,6 @@ def should_enable_tooltip(notetype: str) -> bool:
 
 
 def append_webcontent(webcontent: WebContent, context: Any):
-
     if isinstance(context, (Reviewer, Previewer, CardLayout)):
         webcontent.js.append(f"{base_path}/vendor/popper.min.js")
         webcontent.js.append(f"{base_path}/vendor/tippy.umd.min.js")

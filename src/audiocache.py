@@ -1,7 +1,7 @@
-import os
-from typing import List
-import re
 import json
+import os
+import re
+from typing import List
 
 try:
     from anki.utils import strip_html as stripHTML
@@ -32,15 +32,15 @@ def get_cached_audio(disk_word: str) -> List[str]:
 
 
 def cache_failed_lookup(disk_word: str) -> None:
-    with open(FAILED_LOOKUP_CACHE_FILE, "r") as f:
+    with open(FAILED_LOOKUP_CACHE_FILE, "r", encoding="utf-8") as f:
         lookups: List = json.load(f)
     lookups.append(disk_word)
-    with open(FAILED_LOOKUP_CACHE_FILE, "w") as f:
+    with open(FAILED_LOOKUP_CACHE_FILE, "w", encoding="utf-8") as f:
         json.dump(lookups, f, ensure_ascii=False)
 
 
 def has_cached_failed_lookup(disk_word: str) -> bool:
-    with open(FAILED_LOOKUP_CACHE_FILE, "r") as f:
+    with open(FAILED_LOOKUP_CACHE_FILE, "r", encoding="utf-8") as f:
         lookups = set(json.load(f))
         return disk_word in lookups
 

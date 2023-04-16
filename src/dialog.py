@@ -2,21 +2,21 @@ import urllib
 import urllib.request
 from typing import List
 
-from aqt.qt import *
+from anki.notes import Note
 from aqt import qtmajor
 from aqt.main import AnkiQt
-from aqt.utils import showWarning
-from anki.notes import Note
 from aqt.operations import QueryOp
+from aqt.qt import *
+from aqt.utils import showWarning
 
 if qtmajor > 5:
     from .forms.form_qt6 import Ui_Dialog
 else:
     from .forms.form_qt5 import Ui_Dialog
 
-from .consts import *
-
 from tdk import TDK, NoAudioError, WordNotFoundError
+
+from .consts import *
 
 PROGRESS_LABEL = "Updated {count} out of {total} note(s)"
 
@@ -126,8 +126,8 @@ class TRDictDialog(QDialog):
         for note in self.notes:
             word = note[word_field]
             tdk = TDK(word)
+            need_updating = False
             try:
-                need_updating = False
                 if definition_field_i:
                     definitions = self._get_definitions(tdk)
                     note[self.field_names[definition_field_i]] = definitions
@@ -154,7 +154,7 @@ class TRDictDialog(QDialog):
                             max=len(self.notes),
                         )
                     )
-        self.mw.taskman.run_on_main(lambda: self.mw.progress.finish())
+        self.mw.taskman.run_on_main(self.mw.progress.finish)
 
     def _get_definitions(self, tdk: TDK) -> str:
         field_contents = []
@@ -180,6 +180,6 @@ class TRDictDialog(QDialog):
                 with urllib.request.urlopen(req) as res:
                     name = self.mw.col.media.write_data(name, res.read())
                     field_contents += f"[sound:{name}]"
-            except Exception:
-                raise Exception("failed to download audio")
+            except Exception as exc:
+                raise Exception("failed to download audio") from exc
         return field_contents

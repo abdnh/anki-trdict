@@ -1,17 +1,14 @@
 import sys
 from typing import List
 
-from aqt.gui_hooks import (
-    browser_menus_did_init,
-    editor_did_init_buttons,
-)
 from anki.hooks import field_filter
 from anki.template import TemplateRenderContext
-from aqt.qt import *
 from aqt.browser.browser import Browser
 from aqt.editor import Editor
-from aqt.utils import showText, tooltip
+from aqt.gui_hooks import browser_menus_did_init, editor_did_init_buttons
 from aqt.operations import CollectionOp
+from aqt.qt import *
+from aqt.utils import showText, tooltip
 
 from .consts import *
 
@@ -21,8 +18,8 @@ import tdk
 
 tdk.TDK.user_agent = USER_AGENT
 
-from .dialog import TRDictDialog
 from .audiocache import get_audio
+from .dialog import TRDictDialog
 from .tooltips import init_webview
 
 
