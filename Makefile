@@ -3,10 +3,10 @@
 all: ankiweb zip
 
 zip:
-	python -m ankibuild --type package --qt all
+	python -m ankibuild --type package --qt all --exclude user_files/**/ --exclude user_files/*.json
 
 ankiweb:
-	python -m ankibuild --type ankiweb --qt all
+	python -m ankibuild --type ankiweb --qt all --exclude user_files/**/ --exclude user_files/*.json
 
 src/vendor/tdk.py:
 	mkdir -p src/vendor
