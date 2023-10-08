@@ -40,11 +40,12 @@ def append_webcontent(webcontent: WebContent, context: Any) -> None:
 
 def init_tooltips(text: str, card: Card, kind: str) -> str:
     notetype = card.note_type()["name"]
-    js = ""
+    js = "<script>"
     if should_enable_tooltip(notetype):
-        js = "<script>enableTooltips()</script>"
+        js += "enableTooltips();"
     else:
-        js = "<script>disableTooltips()</script>"
+        js += "disableTooltips();"
+    js += "if(globalThis.tippyInstance) globalThis.tippyInstance.hide();</script>"
     return text + js
 
 

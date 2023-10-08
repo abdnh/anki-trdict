@@ -18,8 +18,10 @@ function showTooltipForSelection() {
         animation: "scale-extreme",
         appendTo: document.body,
         onHide() {
-            span.insertAdjacentHTML('afterend', span.innerHTML);
-            span.remove();
+            try {
+                span.insertAdjacentHTML('afterend', span.innerHTML);
+                span.remove();
+            } catch (err) { }
         },
     });
     tooltip.show();
