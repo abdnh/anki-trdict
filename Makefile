@@ -1,26 +1,33 @@
-.PHONY: all zip ankiweb fix mypy pylint clean
+.PHONY: all zip ankiweb vendor fix mypy pylint lint test sourcedist clean
 
-all: ankiweb zip
+all: zip ankiweb
 
 zip:
-	python -m ankibuild --type package --qt all --exclude user_files/**/ --exclude user_files/*.json
+	python -m ankiscripts.build --type package --qt all --exclude user_files/**/*
 
 ankiweb:
-	python -m ankibuild --type ankiweb --qt all --exclude user_files/**/ --exclude user_files/*.json
+	python -m ankiscripts.build --type ankiweb --qt all --exclude user_files/**/*
 
-src/vendor/tdk.py:
-	mkdir -p src/vendor
-	curl https://raw.githubusercontent.com/abdnh/tdk/master/tdk.py -o $@
+vendor:
+	python -m ankiscripts.vendor
 
 fix:
 	python -m black src tests --exclude="forms|vendor"
 	python -m isort src tests
 
 mypy:
-	python -m mypy src tests
+	-python -m mypy src tests
 
 pylint:
-	python -m pylint src tests
+	-python -m pylint src tests
+
+lint: mypy pylint
+
+test:
+	python -m  pytest --cov=src --cov-config=.coveragerc
+
+sourcedist:
+	python -m ankiscripts.sourcedist
 
 clean:
 	rm -rf build/

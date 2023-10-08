@@ -1,4 +1,4 @@
 {
-    "tooltip_shortcut": "Alt+Shift+S",
-    "tooltip_enabled_notetypes": ["Turkish"]
+    "tooltip_enabled_notetypes": ["Turkish"],
+    "tooltip_shortcut": "Alt+Shift+S"
 }

@@ -3,26 +3,20 @@ import urllib.request
 from typing import List
 
 from anki.notes import Note
-from aqt import qtmajor
 from aqt.main import AnkiQt
 from aqt.operations import QueryOp
 from aqt.qt import *
 from aqt.utils import showWarning
-
-if qtmajor > 5:
-    from .forms.form_qt6 import Ui_Dialog
-else:
-    from .forms.form_qt5 import Ui_Dialog
-
 from tdk import TDK, NoAudioError, WordNotFoundError
 
-from .consts import *
+from ..consts import *
+from ..forms.form import Ui_Dialog
 
 PROGRESS_LABEL = "Updated {count} out of {total} note(s)"
 
 
 class TRDictDialog(QDialog):
-    def __init__(self, mw: AnkiQt, parent, notes: List[Note]):
+    def __init__(self, mw: AnkiQt, parent: QWidget, notes: List[Note]):
         super().__init__(parent)
         self.form = Ui_Dialog()
         self.form.setupUi(self)
@@ -34,8 +28,8 @@ class TRDictDialog(QDialog):
             self.form.sentenceFieldComboBox,
             self.form.audioFieldComboBox,
         ]
-        self.setWindowTitle(ADDON_NAME_LONG)
-        self.form.icon.setPixmap(QPixmap(os.path.join(ADDON_DIR, "icon.png")))
+        self.setWindowTitle(consts.name)
+        self.form.icon.setPixmap(QPixmap(os.path.join(consts.dir, "icon.png")))
         self._fill_fields()
         qconnect(self.form.addButton.clicked, self.on_add)
         self.form.addButton.setShortcut(QKeySequence("Ctrl+Return"))
@@ -46,7 +40,7 @@ class TRDictDialog(QDialog):
             showWarning(
                 "Please select notes from only one notetype.",
                 parent=self,
-                title=ADDON_NAME,
+                title=consts.name,
             )
             self.done(0)
             return
@@ -77,7 +71,7 @@ class TRDictDialog(QDialog):
             return
 
         if self.form.wordFieldComboBox.currentIndex() == 0:
-            showWarning("No word field selected.", parent=self, title=ADDON_NAME)
+            showWarning("No word field selected.", parent=self, title=consts.name)
             return
         word_field = self.form.wordFieldComboBox.currentText()
         definition_field_i = self.form.definitionFieldComboBox.currentIndex()
@@ -100,7 +94,7 @@ class TRDictDialog(QDialog):
 
         def on_failure(exc):
             self.mw.progress.finish()
-            showWarning(str(exc), parent=self, title=ADDON_NAME)
+            showWarning(str(exc), parent=self, title=consts.name)
 
         op.failure(on_failure)
 
@@ -109,7 +103,7 @@ class TRDictDialog(QDialog):
             label=PROGRESS_LABEL.format(count=0, total=len(self.notes)),
             parent=self,
         )
-        self.mw.progress.set_title(ADDON_NAME)
+        self.mw.progress.set_title(consts.name)
         op.run_in_background()
 
         # with_progress() was broken until Anki 2.1.50 (https://addon-docs.ankiweb.net/background-ops.html#read-onlynon-undoable-operations),

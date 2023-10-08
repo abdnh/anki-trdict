@@ -1,6 +1,6 @@
 {
-    "package": "TRDict",
-    "name": "TRDict - Turkish Dictionary",
     "ankiweb_id": "351090164",
-    "homepage": "https://github.com/abdnh/anki-trdict/"
+    "homepage": "https://github.com/abdnh/anki-trdict/",
+    "name": "TRDict - Turkish Dictionary",
+    "package": "TRDict"
 }

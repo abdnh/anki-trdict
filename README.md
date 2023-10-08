@@ -27,7 +27,7 @@ This works for notetypes specified in the `tooltip_enabled_notetypes` option, wh
 
 The add-on works on Anki 2.1.49+.
 
-## Installation
+## Download
 
 You can download the add-on from AnkiWeb: https://ankiweb.net/shared/info/351090164
 

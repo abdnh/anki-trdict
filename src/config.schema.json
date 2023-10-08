@@ -1,0 +1,14 @@
+{
+    "properties": {
+        "tooltip_enabled_notetypes": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "tooltip_shortcut": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
