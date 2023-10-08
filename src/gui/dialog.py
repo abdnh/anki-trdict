@@ -3,6 +3,7 @@ import urllib.request
 from typing import Any, List
 
 from anki.notes import Note
+from anki.utils import pointVersion
 from aqt.main import AnkiQt
 from aqt.operations import QueryOp
 from aqt.qt import *
@@ -105,13 +106,10 @@ class TRDictDialog(QDialog):
             parent=self,
         )
         self.mw.progress.set_title(consts.name)
-        op.run_in_background()
+        if pointVersion() >= 50:
+            op.with_progress(PROGRESS_LABEL.format(count=0, total=len(self.notes)))
 
-        # with_progress() was broken until Anki 2.1.50 (https://addon-docs.ankiweb.net/background-ops.html#read-onlynon-undoable-operations),
-        # so this doesn't work on the latest stable release
-        # op.with_progress(
-        #     PROGRESS_LABEL.format(count=0, total=len(self.notes))
-        # ).run_in_background()
+        op.run_in_background()
 
     def _fill_notes(
         self,
