@@ -32,7 +32,7 @@ def get_cached_audio(disk_word: str) -> List[str]:
 
 
 def cache_failed_lookup(disk_word: str) -> None:
-    with open(FAILED_LOOKUP_CACHE_FILE, "r", encoding="utf-8") as f:
+    with open(FAILED_LOOKUP_CACHE_FILE, encoding="utf-8") as f:
         lookups: List = json.load(f)
     lookups.append(disk_word)
     with open(FAILED_LOOKUP_CACHE_FILE, "w", encoding="utf-8") as f:
@@ -40,7 +40,7 @@ def cache_failed_lookup(disk_word: str) -> None:
 
 
 def has_cached_failed_lookup(disk_word: str) -> bool:
-    with open(FAILED_LOOKUP_CACHE_FILE, "r", encoding="utf-8") as f:
+    with open(FAILED_LOOKUP_CACHE_FILE, encoding="utf-8") as f:
         lookups = set(json.load(f))
         return disk_word in lookups
 

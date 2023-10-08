@@ -37,7 +37,7 @@ class TRDictDialog(QDialog):
         self.form.addButton.setShortcut(QKeySequence("Ctrl+Return"))
 
     def _fill_fields(self) -> None:
-        mids = set(note.mid for note in self.notes)
+        mids = {note.mid for note in self.notes}
         if len(mids) > 1:
             showWarning(
                 "Please select notes from only one notetype.",

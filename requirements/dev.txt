@@ -180,6 +180,8 @@ send2trash==1.8.2
     # via aqt
 soupsieve==2.5
     # via beautifulsoup4
+tdk @ git+https://github.com/abdnh/tdk@caf7fd35d7beb7a3f51b3fafb3cafaf8ec8d03ef
+    # via -r requirements\bundle.in
 tokenize-rt==5.2.0
     # via pyupgrade
 tomli==2.0.1

@@ -12,16 +12,18 @@ function showTooltipForSelection() {
     const tooltip = tippy(span, {
         placement: "bottom",
         allowHTML: true,
-        theme: document.body.classList.contains("night_mode") ? "material" : "light",
+        theme: document.body.classList.contains("night_mode")
+            ? "material"
+            : "light",
         interactive: true,
-        trigger: '',
+        trigger: "",
         animation: "scale-extreme",
         appendTo: document.body,
         onHide() {
             try {
-                span.insertAdjacentHTML('afterend', span.innerHTML);
+                span.insertAdjacentHTML("afterend", span.innerHTML);
                 span.remove();
-            } catch (err) { }
+            } catch (err) {}
         },
     });
     tooltip.show();
