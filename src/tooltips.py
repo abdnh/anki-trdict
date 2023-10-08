@@ -26,7 +26,7 @@ def should_enable_tooltip(notetype: str) -> bool:
     return any(p.search(notetype) for p in tooltip_enabled_notetypes)
 
 
-def append_webcontent(webcontent: WebContent, context: Any):
+def append_webcontent(webcontent: WebContent, context: Any) -> None:
     if isinstance(context, (Reviewer, Previewer, CardLayout)):
         webcontent.js.append(f"{base_path}/vendor/popper.min.js")
         webcontent.js.append(f"{base_path}/vendor/tippy.umd.min.js")
@@ -38,7 +38,7 @@ def append_webcontent(webcontent: WebContent, context: Any):
         webcontent.css.append(f"{base_path}/vendor/material.css")
 
 
-def init_tooltips(text: str, card: Card, kind: str):
+def init_tooltips(text: str, card: Card, kind: str) -> str:
     notetype = card.note_type()["name"]
     js = ""
     if should_enable_tooltip(notetype):
@@ -146,7 +146,7 @@ def handle_popup_request(
     return (True, None)
 
 
-def show_tooltip():
+def show_tooltip() -> None:
     window = mw.app.activeWindow()
     # FIXME: not actually working in the card layouts screen
     if isinstance(window, CardLayout):
@@ -160,13 +160,13 @@ def show_tooltip():
     web.eval("showTooltipForSelection();")
 
 
-def init_webview():
+def init_webview() -> None:
     webview_will_set_content.append(append_webcontent)
     card_will_show.append(init_tooltips)
     webview_did_receive_js_message.append(handle_popup_request)
-    QShortcut(
+    shortcut = QShortcut(
         QKeySequence(config["tooltip_shortcut"]),
         mw,
-        activated=show_tooltip,
         context=Qt.ShortcutContext.ApplicationShortcut,
     )
+    qconnect(shortcut.activated, show_tooltip)

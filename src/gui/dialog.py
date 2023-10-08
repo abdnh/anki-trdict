@@ -1,6 +1,6 @@
 import urllib
 import urllib.request
-from typing import List
+from typing import Any, List
 
 from anki.notes import Note
 from aqt.main import AnkiQt
@@ -10,6 +10,7 @@ from aqt.utils import showWarning
 from tdk import TDK, NoAudioError, WordNotFoundError
 
 from ..consts import *
+from ..errors import TrDictError
 from ..forms.form import Ui_Dialog
 
 PROGRESS_LABEL = "Updated {count} out of {total} note(s)"
@@ -34,7 +35,7 @@ class TRDictDialog(QDialog):
         qconnect(self.form.addButton.clicked, self.on_add)
         self.form.addButton.setShortcut(QKeySequence("Ctrl+Return"))
 
-    def _fill_fields(self):
+    def _fill_fields(self) -> None:
         mids = set(note.mid for note in self.notes)
         if len(mids) > 1:
             showWarning(
@@ -58,15 +59,15 @@ class TRDictDialog(QDialog):
                 ),
             )
 
-    def on_selected_field_changed(self, combo_index, field_index):
+    def on_selected_field_changed(self, combo_index: int, field_index: int) -> None:
         if field_index == 0:
             return
         for i, combo in enumerate(self.combos):
             if i != combo_index and combo.currentIndex() == field_index:
                 combo.setCurrentIndex(0)
 
-    def on_add(self):
-        if self.form.wordFieldComboBox.currentIndex == 0:
+    def on_add(self) -> None:
+        if self.form.wordFieldComboBox.currentIndex() == 0:
             self.done(0)
             return
 
@@ -78,7 +79,7 @@ class TRDictDialog(QDialog):
         sentence_field_i = self.form.sentenceFieldComboBox.currentIndex()
         audio_field_i = self.form.audioFieldComboBox.currentIndex()
 
-        def on_success(ret):
+        def on_success(ret: Any) -> None:
             if len(self.updated_notes) > 0:
                 self.done(1)
             else:
@@ -92,7 +93,7 @@ class TRDictDialog(QDialog):
             success=on_success,
         )
 
-        def on_failure(exc):
+        def on_failure(exc: Exception) -> None:
             self.mw.progress.finish()
             showWarning(str(exc), parent=self, title=consts.name)
 
@@ -113,8 +114,12 @@ class TRDictDialog(QDialog):
         # ).run_in_background()
 
     def _fill_notes(
-        self, word_field, definition_field_i, sentence_field_i, audio_field_i
-    ):
+        self,
+        word_field: str,
+        definition_field_i: int,
+        sentence_field_i: int,
+        audio_field_i: int,
+    ) -> None:
         self.errors = []
         self.updated_notes = []
         for note in self.notes:
@@ -175,5 +180,5 @@ class TRDictDialog(QDialog):
                     name = self.mw.col.media.write_data(name, res.read())
                     field_contents += f"[sound:{name}]"
             except Exception as exc:
-                raise Exception("failed to download audio") from exc
+                raise TrDictError("failed to download audio") from exc
         return field_contents

@@ -11,21 +11,21 @@ from aqt.operations import CollectionOp
 from aqt.qt import *
 from aqt.utils import showText, tooltip
 
-from .consts import *
-
 sys.path.append(os.path.join(os.path.dirname(__file__), "vendor"))
 
 import tdk
-
-tdk.TDK.user_agent = USER_AGENT
 
 from .audiocache import get_audio
 from .consts import *
 from .gui.dialog import TRDictDialog
 from .tooltips import init_webview
 
+tdk.TDK.user_agent = USER_AGENT
 
-def on_bulk_updated_notes(browser: Browser, errors: List[str], updated_count: int):
+
+def on_bulk_updated_notes(
+    browser: Browser, errors: List[str], updated_count: int
+) -> None:
     msg = f"Updated {updated_count} note(s) with data from the TDK dictionary."
     if errors:
         msg += " The following issues happened during the process:\n"
@@ -49,7 +49,7 @@ def on_browser_action_triggered(browser: Browser) -> None:
         ).run_in_background()
 
 
-def on_browser_menus_did_init(browser: Browser):
+def on_browser_menus_did_init(browser: Browser) -> None:
     a = QAction("Bulk-define selected Turkish words", browser)
     qconnect(a.triggered, lambda: on_browser_action_triggered(browser))
     browser.form.menuEdit.addSeparator()
@@ -63,7 +63,7 @@ def on_editor_button_clicked(editor: Editor) -> None:
             editor.loadNoteKeepingFocus()
 
 
-def on_editor_did_init_buttons(buttons: List[str], editor: Editor):
+def on_editor_did_init_buttons(buttons: List[str], editor: Editor) -> None:
     button = editor.addButton(
         icon=os.path.join(consts.dir, "icon.svg"),
         cmd="trdict",

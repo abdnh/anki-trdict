@@ -4,9 +4,9 @@ import re
 from typing import List
 
 try:
-    from anki.utils import strip_html as stripHTML
+    from anki.utils import strip_html
 except:
-    from anki.utils import stripHTML
+    from anki.utils import stripHTML as strip_html  # type: ignore
 
 import tdk
 
@@ -14,7 +14,7 @@ from .consts import *
 
 
 def normalize_word(word: str) -> str:
-    return stripHTML(word).strip()
+    return strip_html(word).strip()
 
 
 def to_disk_name(word: str) -> str:
